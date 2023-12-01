@@ -10,8 +10,9 @@ export const Tab = styled.div`
   align-items: center;
   justify-content: center;
   border-bottom: ${(props) =>
-    props.isActive
+    props.$isActive
       ? `2px solid ${CS.color.borderOpaque}`
       : `1px solid ${CS.color.borderTransparent}`};
   cursor: pointer;
+  font: ${CS.font.labelSmall};
 `;

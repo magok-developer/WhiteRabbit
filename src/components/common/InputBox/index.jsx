@@ -6,72 +6,66 @@ import BasicText from '../BasicText';
 import BasicButton from '../BasicButton';
 
 function InputBox({
-  text,
+  label,
   subTextProps,
   inputProps,
   buttonElement,
   onClickButton,
+  signType,
+  text,
 }) {
-  const { text: subText, style: subStyle, type } = subTextProps;
-  const {
-    value,
-    handleOnChangeValue,
-    placeholder,
-    isReadOnly = false,
-    id = undefined,
-    name,
-  } = inputProps;
   return (
     <>
       <S.Container>
         <S.ContentWrap>
           <BasicText
-            text={text}
-            style={{ color: CS.color.black, fontWeight: 600 }}
+            text={label}
+            style={{
+              color: CS.color.black,
+              fontWeight: 600,
+              font: CS.font.labelMedium,
+              height: '56px',
+            }}
           />
-          <S.SignText />
+          <S.SignText $signType={signType} />
           <BasicText
-            text={subText}
+            {...subTextProps}
             style={
-              type === 'none'
+              subTextProps.type === 'none'
                 ? { display: 'none' }
-                : { color: CS.color.contentTertiary, fontSize: 12 }
+                : { color: CS.color.contentTertiary, font: CS.font.labelSmall }
             }
           />
         </S.ContentWrap>
         <S.InputWrap>
           <BasicInput
-            id={id ? id : undefined}
-            value={value}
-            name={name}
-            onChange={handleOnChangeValue}
-            placeholder={placeholder}
-            isReadOnly={isReadOnly}
+            {...inputProps}
             style={{
               width: 200,
-              fontSize: 16,
+              height: 50,
+              font: CS.font.labelMedium,
               textAlign: 'left',
               outline: 'none',
               border: `1px solid ${CS.color.secondary}`,
               borderRadius: 10,
-              marginRight: 8,
               marginBottom: 0,
               paddingBottom: 0,
               paddingLeft: 16,
+              ...inputProps.style,
             }}
           />
           {buttonElement ? (
             <BasicButton
-              onClick={onClickButton}
-              text="인증"
+              handleOnClickButton={onClickButton}
+              text={text}
               textStyle={{
                 color: CS.color.white,
-                size: 16,
+                font: CS.font.labelMedium,
               }}
               btnStyle={{
-                backgroundColor: CS.color.white,
+                backgroundColor: CS.color.primary,
                 width: 92,
-                height: 42,
+                height: 50,
                 borderRadius: 10,
               }}
             />

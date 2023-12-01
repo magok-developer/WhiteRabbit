@@ -1,13 +1,27 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
-  width: ${({ width }) => width || '100%'};
-  height: ${({ height }) => height || '100%'};
+export const Wrapper = styled.div`
+  width: 100%;
+  height: 100%;
   display: flex;
-  padding: ${({ padding }) => padding || 0};
-  flex-direction: ${({ direction }) => direction};
-  justify-content: ${({ direction }) =>
-    direction === 'column' ? 'center' : 'flex-start'};
-  align-items: ${({ direction }) =>
-    direction === 'column' ? 'flex-start' : 'center'};
+  align-items: center;
+  justify-content: center;
+`;
+
+export const InfoBox = styled.div`
+  width: 100%;
+  height: 100%;
+  padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+`;
+
+export const MoreBtn = styled.div`
+  width: 24px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;

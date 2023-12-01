@@ -7,7 +7,11 @@ import * as S from './style';
 import * as CS from '../../../styles/CommonStyles';
 import BasicText from '../../common/BasicText';
 
-function IntroHeader({ type, empty }) {
+function IntroHeader({ type, empty, userId, isMe = true }) {
+  const link =
+    type === 'skill'
+      ? `${ROUTER_LINK.NEWSKILL.link}/${userId}`
+      : `${ROUTER_LINK.NEWLINK.link}/${userId}`;
   return (
     <>
       <S.Container>
@@ -20,24 +24,22 @@ function IntroHeader({ type, empty }) {
           <BasicText
             text={type === 'skill' ? '스킬' : '링크'}
             style={{
-              size: 16,
-              color: CS.color.primary,
+              font: CS.color.headingLarge,
+              color: CS.color.black,
               fontWeight: 600,
             }}
           />
         </S.HeaderWrap>
-        {empty === true ? (
-          <PiPencilSimpleLight style={{ display: 'none' }} />
-        ) : (
-          <Link to={ROUTER_LINK.NEWLINK.link}>
-            <PiPencilSimpleLight
-              style={{
-                cursor: 'pointer',
-                color: CS.color.contentTertiary,
-              }}
-            />
-          </Link>
-        )}
+
+        <Link to={link}>
+          <PiPencilSimpleLight
+            style={{
+              cursor: 'pointer',
+              color: CS.color.contentTertiary,
+              display: empty || !isMe ? 'none' : 'block',
+            }}
+          />
+        </Link>
       </S.Container>
     </>
   );

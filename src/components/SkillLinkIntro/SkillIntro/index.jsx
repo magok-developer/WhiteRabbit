@@ -1,27 +1,19 @@
 import React from 'react';
 import * as S from './style';
-import * as CS from '../../../styles/CommonStyles';
+import SkillText from '../../common/SkillText';
 
-function SkillIntro({ text }) {
+function SkillIntro({ skills }) {
   return (
     <>
       <S.Container>
-        <BasicText
-          text={text}
-          style={{
-            color: CS.color.black,
-            fontSize: 12,
-            fontWeight: 600,
-
-            padding: '8px 12px',
-
-            border: `1px solid ${CS.color.secondary}`,
-            borderRadius: 20,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        />
+        {skills?.map((skill) => (
+          <SkillText
+            key={skill._id}
+            text={skill.skill}
+            existIcon={false}
+            choice={false}
+          />
+        ))}
       </S.Container>
     </>
   );

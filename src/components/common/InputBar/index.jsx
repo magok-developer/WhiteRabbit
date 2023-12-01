@@ -4,9 +4,12 @@ import BasicInput from '../BasicInput';
 
 const InputBar = ({
   id,
+  src,
   type,
   value,
+  accept,
   handleOnChangeValue,
+  handleOnKeyDownValue,
   placeholder = '',
   isReadOnly = false,
   inputStyle,
@@ -14,6 +17,8 @@ const InputBar = ({
   children,
   existLeft = false,
   existRight = false,
+  existClearBtn,
+  btnOnClick,
 }) => {
   return (
     <S.InputBar style={inputBarStyle}>
@@ -22,10 +27,15 @@ const InputBar = ({
         id={id}
         type={type}
         value={value}
+        accept={accept}
+        src={src}
         onChange={handleOnChangeValue}
+        onKeyDown={handleOnKeyDownValue}
         placeholder={placeholder}
         readOnly={isReadOnly}
         style={inputStyle}
+        existClearBtn={existClearBtn}
+        btnOnClick={btnOnClick}
       />
       {existRight && children}
     </S.InputBar>

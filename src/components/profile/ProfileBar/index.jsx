@@ -5,14 +5,22 @@ import BasicText from '../../common/BasicText';
 import BasicButton from '../../common/BasicButton';
 import ProfileImg from '../../common/ProfileImg';
 import { BsThreeDotsVertical } from 'react-icons/bs';
+import { convertTimeAgo } from '../../../utils/convertTimeAgo';
+import { followApi } from '../../../../api/utils/Follow';
 
-const ProfileSize = {
-  1: '48px',
+const ProfileImgSize = {
+  1: '40px',
   2: '72px',
   3: '128px',
 };
 
-const ProfileTag = ({
+const userLabelText = {
+  USER: '레이서',
+  ADMIN: '관리자',
+  COACH: '코치',
+};
+
+const ProfileBar = ({
   src,
   username,
   rate,
@@ -28,38 +36,52 @@ const ProfileTag = ({
   isFollow,
   existMoreBtn = false,
   profileSize,
+  handleOnClickBar,
+  handleOnClickDots,
+  style,
+  onClickFollower,
+  onClickFollowing,
+  followId,
 }) => {
   const [timeAgo, setTimeAgo] = useState('');
+  const [_isFollow, setIsFollow] = useState(isFollow);
+
+  const userLabelText = {
+    USER: '레이서',
+    ADMIN: '관리자',
+    COACH: '코치',
+  };
+
+  const handleOnClickFollow = async (e) => {
+    e.preventDefault();
+
+    if (_isFollow) {
+      const response = await followApi.deleteFollow(followId);
+
+      if (response.status === 200) {
+        setIsFollow(!_isFollow);
+      }
+    } else {
+      const response = await followApi.postFollow(followId);
+      if (response.status === 201) {
+        setIsFollow(!_isFollow);
+      }
+    }
+  };
 
   useEffect(() => {
-    const createdDate = new Date(createdAt);
-    const currentDate = new Date();
-
-    const timeDifference = currentDate - createdDate;
-    const seconds = Math.floor(timeDifference / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
-
-    let timeAgoString = '';
-    if (days > 0) {
-      timeAgoString = `${days}일 전`;
-    } else if (hours > 0) {
-      timeAgoString = `${hours}시간 전`;
-    } else if (minutes > 0) {
-      timeAgoString = `${minutes}분 전`;
-    } else {
-      timeAgoString = '방금 전';
-    }
-
-    setTimeAgo(timeAgoString);
+    setTimeAgo(convertTimeAgo(createdAt));
   }, [createdAt]);
 
   return (
     <>
-      <S.Container direction={'row'}>
-        <ProfileImg src={src} style={{ width: ProfileSize[profileSize] }} />
-        <S.Container direction={'column'} padding={'0 10px'}>
+      <S.Wrapper style={style}>
+        <ProfileImg
+          src={src}
+          style={{ width: ProfileImgSize[profileSize] }}
+          onClickEvent={handleOnClickBar}
+        />
+        <S.InfoBox onClick={handleOnClickBar}>
           <BasicText text={username} style={{ font: CS.font.labelSmall }} />
           {existGeneration && (
             <BasicText
@@ -69,59 +91,63 @@ const ProfileTag = ({
           )}
           {existTimeAgo ? (
             <BasicText
-              text={`${rate} ･ ${timeAgo}`}
+              text={`${userLabelText[rate]} ･ ${timeAgo}`}
               style={{ font: CS.font.paragraphSmall }}
             />
           ) : (
             <BasicText text={rate} style={{ font: CS.font.paragraphSmall }} />
           )}
           {existFollow && (
-            <BasicText
-              text={`팔로워 ${followers} 팔로잉 ${followings}`}
-              style={{ font: CS.font.paragraphSmall }}
-            />
+            <div style={{ display: 'flex' }}>
+              <BasicText
+                onClick={onClickFollower}
+                text={`팔로워 ${followers}`}
+                style={{ font: CS.font.paragraphSmall, cursor: 'pointer' }}
+              />
+
+              <BasicText
+                onClick={onClickFollowing}
+                text={`팔로잉 ${followings}`}
+                style={{ font: CS.font.paragraphSmall, cursor: 'pointer' }}
+              />
+            </div>
           )}
-        </S.Container>
-        <S.Container width="70px" height="35px">
-          {existFollowBtn &&
-            (isFollow ? (
-              <BasicButton
-                text="팔로잉"
-                btnStyle={{
-                  width: '100%',
-                  height: '100%',
-                  borderRadius: '4px',
-                  backgroundColor: CS.color.accent,
-                }}
-                textStyle={{
-                  font: CS.font.labelSmall,
-                  color: CS.color.white,
-                }}
-              />
-            ) : (
-              <BasicButton
-                text="팔로우"
-                btnStyle={{
-                  width: '100%',
-                  height: '100%',
-                  borderRadius: '4px',
-                  backgroundColor: CS.color.primary,
-                }}
-                textStyle={{
-                  font: CS.font.labelSmall,
-                  color: CS.color.white,
-                }}
-              />
-            ))}
-        </S.Container>
-        {existMoreBtn && (
-          <S.Container width="16px">
-            <BsThreeDotsVertical size="16px" color={CS.color.contentTertiary} />
-          </S.Container>
+        </S.InfoBox>
+        {existFollowBtn && (
+          <BasicButton
+            text={_isFollow ? '팔로잉' : '팔로우'}
+            handleOnClickButton={handleOnClickFollow}
+            btnStyle={{
+              width: '70px',
+              height: '35px',
+              borderRadius: '4px',
+              backgroundColor: _isFollow ? CS.color.primary : CS.color.accent,
+            }}
+            textStyle={{
+              font: CS.font.labelSmall,
+              color: CS.color.white,
+            }}
+          />
         )}
-      </S.Container>
+        {existMoreBtn && (
+          <BasicButton
+            existIcon={true}
+            existText={false}
+            handleOnClickButton={handleOnClickDots}
+            btnStyle={{
+              width: '24px',
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <BsThreeDotsVertical size="24px" color={CS.color.contentTertiary} />
+          </BasicButton>
+        )}
+      </S.Wrapper>
     </>
   );
 };
 
-export default ProfileTag;
+export default ProfileBar;
