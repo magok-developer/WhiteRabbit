@@ -52,7 +52,11 @@ Database - MongoDB<br/>
 MongoDB를 사용하여 유연한 데이터 스토리지와 관리 기능 제공.<br/>
 Validation - Joi<br/>
 데이터 유효성 검사를 위해 Joi 라이브러리 사용.<br/>
- 
+
+
+ ## <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Page%20with%20Curl.png" alt="Page with Curl" width="30" height="30" /> 기획
+ ![image](https://github.com/magok-developer/WhiteRabbit/assets/142283055/e168dbdc-e24b-4ef0-8985-f3991d0f3f01)
+
 
 ## <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Artist%20Palette.png" alt="Artist Palette" width="30" height="30" /> 디자인 시안
 
